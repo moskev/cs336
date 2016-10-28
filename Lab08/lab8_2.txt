@@ -1,0 +1,18 @@
+A. Make sure that you can explain:
+    1. the component structure of the application. What makes the UI composable and why does this matter?
+        -Comment Box act as the outer layer, where there is Comment List and Comment Form inside it. The comment is then is located inside the Comment List. It is like a box inside another box, which makes it modular (based on components) 
+    2. what JSX does.
+        -JSX is used to allow javascript to work with XML with the React framework.
+    3. how the data flows through the components; how are comments loaded? created? saved?
+        -First, comments are loaded with the url, then the state of the author and text is changed to add new comments, and finally it is saved when the button is clicked.
+    4. the nature and purpose of props and state; which is immutable and which is mutable and why does this distinction matter?
+		- props is immutabel and state is mutable. This is important because we want to use state when we want to change a variable in the child. (Parents have props).
+B. Consider the following, more detailed questions based on statements in the tutorial.
+    1. Try editing the comments.json file (to add or remove a legal comment). What happens and why?
+		-The data displayed changes as according to what it is in the JSON.
+    2. When the CommentBox has loaded comments from the server (in loadCommentsFromServer()), why doesn’t it call render() to make them visible?
+		-The CommentBox is already by default visible and don't need render to make it visible again.
+    3. Why should components always represent the current state of the view?
+		- So the state in the DOM is consistent with the state of the view.
+    4. The app implements optimistic updates. Isn’t optimism here more like foolishness? What if the server rejects the new comment (for whatever reason)?
+		-Optimistic updates allow better UI and responsiveness for the client side as it changes data before an ajax request gets sent to the server, and it does have the possibility of getting rejected when it is posted to the server. When the server rejects it will send an error.
