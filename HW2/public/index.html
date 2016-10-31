@@ -1,0 +1,54 @@
+<!--Homework 2 
+Search form that gets a person ID from the user and displays the data for that user using a new DOM entity placed below the input form
+Author: Moses M.
+ -->
+<html>
+<head>
+  <title>Search ID</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-latest.min.js"></script>
+  <script src="script-jquery.js"></script>
+  <script src="app.js"></script>
+</head>
+
+<body>
+  <div class="form" >
+    <h1>Search ID</h1>
+    <form method="POST">
+      <div >
+      <a href="form.html"> Click </a>
+        <label for="id"> to add new person into the database or Enter ID number to find a person: </label>
+        <input type="text" class = "id" name="id">
+      </div>
+      <button type="submit" class="ui-button ui-widget ui-corner-all">Submit </button>
+      <p> <strong>Results: </strong></p>
+    </form>
+  </div>
+</body>
+
+<script>
+  $(document).ready(function() {
+    $( 'form' ).submit(function( event ) {
+     var myId = $(".id").val();
+     event.preventDefault();
+
+     $.ajax({
+      url: "/fetch",
+      type: "get",
+      data: { id:  myId}
+    })
+     .done(function( result ) {
+      console.log('AJAX request succedded...');
+      var person = result;
+       $("p").html("<p>" + "ID: "+ person.id + '<br>' + "First name: " + person.fName + '<br>' + "Last name: " + person.lName 
+        + '<br>' + "Date start: " + person.date + "</p>");
+
+            })
+     .fail(function(xhr, status, errorThrown) {
+          alert( "Person does not exist" );
+              })
+   });
+  });
+</script>
+
+</html>
