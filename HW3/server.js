@@ -19,7 +19,7 @@ var MongoClient = require('mongodb').MongoClient
 var db;
 
 //please replace <Password>
-MongoClient.connect('mongodb://cs336:bjarne@ds011251.mlab.com:11251/cs336calvin', function (err, dbConnection) {
+MongoClient.connect('mongodb://cs336:<Password>@ds011251.mlab.com:11251/cs336calvin', function (err, dbConnection) {
   if (err) throw err
     db = dbConnection;
 });
