@@ -19,9 +19,9 @@ var MongoClient = require('mongodb').MongoClient
 var db;
 
 //please replace <Password>
-MongoClient.connect('mongodb://cs336:<Password>@ds011251.mlab.com:11251/cs336calvin', function (err, dbConnection) {
+MongoClient.connect('mongodb://cs336:bjarne@ds011251.mlab.com:11251/cs336calvin', function (err, dbConnection) {
   if (err) throw err
-    db = dbConnection;
+  db = dbConnection;
 });
 
 
@@ -45,7 +45,7 @@ app.use(function(req, res, next) {
 });
 
 app.get('/api/comments', function(req, res){
-      db.collection("people").find({}).toArray(function(err, data) {
+    db.collection("people").find({}).toArray(function(err, data) {
         if (err) throw err;
         res.json(data);
     });
@@ -152,15 +152,24 @@ app.get('/person/:id/name', function(req,res){
 
 //get /person/id/years
 app.get('/person/:id/years', function(req,res){
-  db.collection("people").find({id: req.params.id}, {startDate: 1}).toArray(function(err, data) {
-        if (err) throw err;
-        res.json(data);
-    });
+  var personData = db.collection("people")
+    .findOne({id: req.params.id}, {startDate: 1},
+      function(err, personDocument) {
+        if (err) {
+          res.status(500).json({
+            'message': 'caught error: ' + err.toString()
+          });
+        } else {
+          personDocument.years = getSeniority(personDocument.startDate);
+          res.json(personDocument);
+        }
+      });
 });
 
 
 //display the result queried by the search id form
 app.get('/fetch', function (req, res) {
+  try {
     var p = getPersonByloginID(req.query.id);
     if (p != null){
      res.json({
@@ -171,15 +180,23 @@ app.get('/fetch', function (req, res) {
     })}
     else{
       console.log("Person does not exist");
-      res.status(404).send();
+      res.status(404).json({
+        'message': 'Person with id ' + req.query.id + ' does not exist.'
+      });
     }
+  } catch (e) {
+    // a server error has bee caught
+    res.status(500).json({
+      'message': 'Caught server error: ' + e.toString()
+    })
+  }
 }); 
 
 //Function to choose person based on id
 function getPersonByloginID(loginId){
- db.collection("people").find({id: req.body.id}).toArray(function(err, data) {
+ db.collection("people").find({id: loginId}).toArray(function(err, data) {
   if (err) throw err;
-      res.json(docs);
+      res.json(data);
  })
 };
 

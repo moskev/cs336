@@ -52,11 +52,13 @@ var CommentList = React.createClass({
     render: function() {
         var commentNodes = this.props.data.map(function(comment) {
             return (
-                <Comment id={comment.firstName} key={comment._id}>
-                    {comment.id}
-                    {comment.firstName}
-                    {comment.lastName}
-                    {comment.startDate}
+                <Comment 
+                    key={comment._id}
+                    id={comment.id}
+                    firstName={comment.firstName}
+                    lastName={comment.lastName}
+                    startDate={comment.startDate}
+                    >
                 </Comment>
             );
         });
@@ -123,18 +125,16 @@ var CommentForm = React.createClass({
 
 
 var Comment = React.createClass({
-    rawMarkup: function() {
-        var md = new Remarkable({html: true});
-        var rawMarkup = md.render(this.props.children.toString());
-        return { __html: rawMarkup };
-    },
     render: function() {
         return (
             <div className="comment">
                 <h2 className="commentAuthor" >
                     {this.props.id}
                 </h2>
-                <span dangerouslySetInnerHTML={this.rawMarkup()} />
+                <span>
+                    {this.props.firstName} {this.props.lastName} <br/>
+                    {this.props.startDate}
+                </span>
             </div>
         );
     }
