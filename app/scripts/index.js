@@ -7,6 +7,9 @@ import CommentEdit from './commentEdit';
 
 import '../css/base.css';
 
+import { StoreTools } from './flux';
+StoreTools.startLoadingComments();
+
 ReactDOM.render((
     <Router history={browserHistory}>
         <Route path="/" component={CommentBox}/>
