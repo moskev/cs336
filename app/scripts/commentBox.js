@@ -17,6 +17,7 @@ module.exports = React.createClass({
         })
          .done(function(result){
              this.setState({data: result});
+             console.log("load comments handler");
          }.bind(this))
          .fail(function(xhr, status, errorThrown) {
              console.error(this.props.url, status, errorThrown.toString());
