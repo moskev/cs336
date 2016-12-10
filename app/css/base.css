@@ -1,5 +1,14 @@
 body {
     background: #fff;
+    background-image: url("http://i68.tinypic.com/34pnebo.png");
+    background-size: 802px 200px;
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-attachment: scroll;
+    border-color: transparent;
+    border-left: 150px solid #19314A;
+    border-right:150px solid #19314A;
+    border-width: 200px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
     line-height: 1.7;
@@ -10,6 +19,7 @@ body {
 a {
     color: #4183c4;
     text-decoration: none;
+    display: block;
 }
 
 a:hover {
@@ -33,9 +43,10 @@ h1, h2, h3, h4 {
 }
 
 h1 {
+    margin-top: 210px;
     border-bottom: 1px solid #ddd;
     font-size: 2.5em;
-    font-family: "Courier New", Courier, monospace;
+    font-family: "Verdana", Geneva, sans-serif;
 }
 
 h2 {
