@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ef6560696c62a675517c"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "b77850110cb1b1e90424"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -614,11 +614,19 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var CommentAdmin = _react2.default.createClass({
+	  displayName: 'CommentAdmin',
+	  render: function render() {
+	    return _react2.default.createElement(_commentBox2.default, { isAdmin: true });
+	  }
+	});
+
 	_reactDom2.default.render(_react2.default.createElement(
-	    _reactRouter.Router,
-	    { history: _reactRouter.browserHistory },
-	    _react2.default.createElement(_reactRouter.Route, { path: '/', component: _commentBox2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/:id', component: _commentEdit2.default })
+	  _reactRouter.Router,
+	  { history: _reactRouter.browserHistory },
+	  _react2.default.createElement(_reactRouter.Route, { path: '/', component: _commentBox2.default }),
+	  _react2.default.createElement(_reactRouter.Route, { path: '/admin', component: CommentAdmin }),
+	  _react2.default.createElement(_reactRouter.Route, { path: '/:id', component: _commentEdit2.default })
 	), document.getElementById('content'));
 
 /***/ },
@@ -27380,9 +27388,15 @@
 	                null,
 	                'Equipment Rental'
 	            ),
-	            _react2.default.createElement(_commentList2.default, { data: this.state.data }),
-	            _react2.default.createElement(_commentForm2.default, { onCommentSubmit: this.handleCommentSubmit })
+	            _react2.default.createElement(_commentList2.default, { data: this.state.data, isAdmin: this.props.isAdmin }),
+	            _react2.default.createElement(_commentForm2.default, { data: this.state.data, isAdmin: this.props.isAdmin })
 	        );
+	    },
+
+	    getDefaultProps: function getDefaultProps() {
+	        return {
+	            isAdmin: false
+	        };
 	    }
 	});
 
@@ -37643,15 +37657,22 @@
 	        var commentNodes = this.props.data.map(function (comment) {
 	            return _react2.default.createElement(
 	                _comment2.default,
-	                { id: comment.id, author: comment.author, key: comment.id },
+	                { id: comment.id, author: comment.author, key: comment.id,
+	                    isAdmin: this.props.isAdmin },
 	                comment.text
 	            );
-	        });
+	        }.bind(this));
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'commentList' },
 	            commentNodes
 	        );
+	    },
+
+	    getDefaultProps: function getDefaultProps() {
+	        return {
+	            isAdmin: false
+	        };
 	    }
 	});
 
@@ -48045,22 +48066,61 @@
 	        var rawMarkup = md.render(this.props.children.toString());
 	        return { __html: rawMarkup };
 	    },
+	    handleDelete: function handleDelete() {
+	        $.ajax({
+	            url: API_URL + "/" + this.props.params.id,
+	            type: 'DELETE'
+	        }).done(function (comments) {
+	            this.context.router.push('/');
+	        }.bind(this)).fail(function (xhr, status, errorThrown) {
+	            console.error(API_URL, status, errorThrown.toString());
+	        }.bind(this));
+	    },
 	    render: function render() {
-	        return _react2.default.createElement(
-	            'div',
-	            { className: 'comment' },
-	            _react2.default.createElement(
-	                'h2',
-	                { className: 'commentAuthor' },
-	                this.props.author
-	            ),
-	            _react2.default.createElement('span', { dangerouslySetInnerHTML: this.rawMarkup() }),
-	            _react2.default.createElement(
-	                _reactRouter.Link,
-	                { to: '/' + this.props.id, type: 'button' },
-	                'Request or Return Item'
-	            )
-	        );
+	        var isAdmin = this.props.isAdmin;
+	        if (isAdmin) {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'comment' },
+	                _react2.default.createElement(
+	                    'h2',
+	                    { className: 'commentAuthor' },
+	                    this.props.author
+	                ),
+	                _react2.default.createElement('span', { dangerouslySetInnerHTML: this.rawMarkup() }),
+	                _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { to: '/' + this.props.id, type: 'button' },
+	                    'Request or Return Item'
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { type: 'button', onClick: this.handleDelete },
+	                    'Delete'
+	                )
+	            );
+	        } else {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'comment' },
+	                _react2.default.createElement(
+	                    'h2',
+	                    { className: 'commentAuthor' },
+	                    this.props.author
+	                ),
+	                _react2.default.createElement('span', { dangerouslySetInnerHTML: this.rawMarkup() }),
+	                _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { to: '/' + this.props.id, type: 'button' },
+	                    'Request or Return Item'
+	                )
+	            );
+	        }
+	    },
+	    getDefaultProps: function getDefaultProps() {
+	        return {
+	            isAdmin: false
+	        };
 	    }
 	});
 
@@ -48106,13 +48166,13 @@
 	        return _react2.default.createElement(
 	            'form',
 	            { className: 'commentForm', onSubmit: this.handleSubmit },
-	            _react2.default.createElement('input', { className: 'ui-widget ui-corner-all', type: 'text', placeholder: 'name...',
+	            _react2.default.createElement('input', { className: 'ui-widget ui-corner-all', type: 'text', placeholder: 'Item name...',
 	                value: this.state.author, onChange: this.handleAuthorChange
 	            }),
-	            _react2.default.createElement('input', { className: 'ui-widget ui-corner-all', type: 'text', placeholder: 'comment...',
+	            _react2.default.createElement('input', { className: 'ui-widget ui-corner-all', type: 'text', placeholder: 'Renter...',
 	                value: this.state.text, onChange: this.handleTextChange
 	            }),
-	            _react2.default.createElement('input', { className: 'ui-button ui-widget ui-corner-all', type: 'submit', value: 'Post' })
+	            _react2.default.createElement('input', { className: 'ui-button ui-widget ui-corner-all', type: 'submit', value: 'Add' })
 	        );
 	    }
 	});
@@ -48249,17 +48309,8 @@
 				console.error(_global.API_URL, status, errorThrown.toString());
 			}.bind(this));
 		},
-		handleDelete: function handleDelete() {
-			_jquery2.default.ajax({
-				url: _global.API_URL + "/" + this.props.params.id,
-				type: 'DELETE'
-			}).done(function (comments) {
-				this.context.router.push('/');
-			}.bind(this)).fail(function (xhr, status, errorThrown) {
-				console.error(_global.API_URL, status, errorThrown.toString());
-			}.bind(this));
-		},
-		hezmethod: function hezmethod() {
+
+		waitMethod: function waitMethod() {
 			console.log("WaitUser= " + waitUser.value);
 			var waitUserArrayLoaded;
 			var waitUserArrayLoadedComment;
@@ -48345,7 +48396,7 @@
 				console.error(_global.API_URL, status, errorThrown.toString());
 			}.bind(this));
 		},
-		hezreturnmethod: function hezreturnmethod() {
+		waitReturnMethod: function waitReturnMethod() {
 			var data;
 			var newUser;
 			var dataLoad;
@@ -48433,12 +48484,12 @@
 					}),
 					_react2.default.createElement(
 						'button',
-						{ type: 'button', onClick: this.hezmethod },
+						{ type: 'button', onClick: this.waitMethod },
 						'Update'
 					),
 					_react2.default.createElement(
 						'button',
-						{ type: 'button', onClick: this.hezreturnmethod },
+						{ type: 'button', onClick: this.waitReturnMethod },
 						'Return'
 					)
 				),
@@ -48486,10 +48537,12 @@
 
 
 	// module
-	exports.push([module.id, "body {\n    background: #fff;\n    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n    font-size: 15px;\n    line-height: 1.7;\n    margin: 0;\n    padding: 30px;\n}\n\na {\n    color: #4183c4;\n    text-decoration: none;\n}\n\na:hover {\n    text-decoration: underline;\n}\n\ncode {\n    background-color: #f8f8f8;\n    border: 1px solid #ddd;\n    border-radius: 3px;\n    font-family: \"Bitstream Vera Sans Mono\", Consolas, Courier, monospace;\n    font-size: 12px;\n    margin: 0 2px;\n    padding: 0 5px;\n}\n\nh1, h2, h3, h4 {\n    font-weight: bold;\n    margin: 0 0 15px;\n    padding: 0;\n}\n\nh1 {\n    border-bottom: 1px solid #ddd;\n    font-size: 2.5em;\n    font-family: \"Courier New\", Courier, monospace;\n}\n\nh2 {\n    border-bottom: 1px solid #eee;\n    font-size: 2em;\n    \n}\n\nh3 {\n    font-size: 1.5em;\n}\n\nh4 {\n    font-size: 1.2em;\n}\n\np, ul {\n    margin: 15px 0;\n}\n\nul {\n    padding-left: 30px;\n}\n\n", ""]);
+	exports.push([module.id, "html{\n    min-height: 100%;\n    border-left: 200px solid #19314A;\n    border-right:200px solid #19314A;\n}\n\nbody {\n    background-image: url(\"http://i67.tinypic.com/z1shu.png\");\n    background-size: 50% 10% contain;\n    background-repeat: no-repeat;\n    background-position: top center;\n    background-attachment: scroll;\n    display: flex;\n    flex-direction: row;\n    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n    font-size: 15px;\n    height: 100%;\n    line-height: 1.7;\n    margin: 0px;\n    padding: 30px;\n}\n\na {\n    color: #4183c4;\n    text-decoration: none;\n    display: block;\n}\n\na:hover {\n    text-decoration: underline;\n}\n\ncode {\n    background-color: #f8f8f8;\n    border: 1px solid #ddd;\n    border-radius: 3px;\n    font-family: \"Bitstream Vera Sans Mono\", Consolas, Courier, monospace;\n    font-size: 12px;\n    margin: 0 2px;\n    padding: 0 5px;\n}\n\n#_2bAa3KiXCmw_Nd1BlN9lG4{\n    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n    font-size: 15px;\n    line-height: 1.7;\n    margin: 0px;\n    padding: 0px;\n}\n\nh1, h2, h3, h4 {\n    font-weight: bold;\n    margin: 0 0 15px;\n    padding: 0;\n}\n\nh1 {\n    margin-top: 210px;\n    border-bottom: 1px solid #ddd;\n    font-size: 2.5em;\n    font-family: \"Verdana\", Geneva, sans-serif;\n}\n\nh2 {\n    border-bottom: 1px solid #eee;\n    font-size: 2em;\n    \n}\n\nh3 {\n    font-size: 1.5em;\n}\n\nh4 {\n    font-size: 1.2em;\n}\n\nimg {\n    position: absolute;\n    bottom: 0px;\n    left: 850px;\n\n}\n\np, ul {\n    margin: 15px 0;\n}\n\nul {\n    padding-left: 30px;\n}\n\n", ""]);
 
 	// exports
-
+	exports.locals = {
+		"content": "_2bAa3KiXCmw_Nd1BlN9lG4"
+	};
 
 /***/ },
 /* 310 */

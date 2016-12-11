@@ -106,18 +106,7 @@ module.exports = React.createClass({
              console.error(API_URL, status, errorThrown.toString());
          }.bind(this));
     },
-    handleDelete: function() {
-        $.ajax({
-            url: API_URL + "/" + this.props.params.id,
-            type: 'DELETE',
-        })
-         .done(function(comments){
-             this.context.router.push('/');
-         }.bind(this))
-         .fail(function(xhr, status, errorThrown) {
-             console.error(API_URL, status, errorThrown.toString());
-         }.bind(this));
-    },
+
 	waitMethod: function() {
 		console.log("WaitUser= " +waitUser.value);
 		var waitUserArrayLoaded;
@@ -128,7 +117,7 @@ module.exports = React.createClass({
 		var propID = this.props.params.id;
 		var firstUser;
 		//var routerpush= this.context.router.push('/');
-		//this is how you load
+		//this is to load
 		$.ajax(API_URL + "/" + this.props.params.id) .done(function(comments) {
 			if ((typeof comments[0].waitUser === "undefined")||(comments[0].waitUser == [])){
 				console.log("first time case");
