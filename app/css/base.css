@@ -1,18 +1,22 @@
+html{
+    min-height: 100%;
+    border-left: 200px solid #19314A;
+    border-right:200px solid #19314A;
+}
+
 body {
-    background: #fff;
-    background-image: url("http://i68.tinypic.com/34pnebo.png");
-    background-size: 802px 200px;
+    background-image: url("http://i67.tinypic.com/z1shu.png");
+    background-size: 50% 10% contain;
     background-repeat: no-repeat;
     background-position: top center;
     background-attachment: scroll;
-    border-color: transparent;
-    border-left: 150px solid #19314A;
-    border-right:150px solid #19314A;
-    border-width: 200px;
+    display: flex;
+    flex-direction: row;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
+    height: 100%;
     line-height: 1.7;
-    margin: 0;
+    margin: 0px;
     padding: 30px;
 }
 
@@ -34,6 +38,14 @@ code {
     font-size: 12px;
     margin: 0 2px;
     padding: 0 5px;
+}
+
+#content{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 0px;
+    padding: 0px;
 }
 
 h1, h2, h3, h4 {
@@ -61,6 +73,13 @@ h3 {
 
 h4 {
     font-size: 1.2em;
+}
+
+img {
+    position: absolute;
+    bottom: 0px;
+    left: 850px;
+
 }
 
 p, ul {
