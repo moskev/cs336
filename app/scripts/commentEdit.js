@@ -16,6 +16,7 @@ module.exports = React.createClass({
             this.loadData();
         }
     },
+    //Allows a user to edit the waiting list and remove themselves from it, or change their own name if they make an error
 	editWaiting: function(){
 		/*
 		var userid= username;
@@ -107,6 +108,7 @@ module.exports = React.createClass({
          }.bind(this));
     },
 
+    //Waiting list functionality that is used if an item is already rented
 	waitMethod: function() {
 		console.log("WaitUser= " +waitUser.value);
 		var waitUserArrayLoaded;
@@ -173,6 +175,7 @@ module.exports = React.createClass({
 			}
 		}.bind(this));
 	},
+	//Refreshs the contents of the waiting list to show various changes after button presses
 	refresh: function() {
 		var data;
 		var newUser;
@@ -197,6 +200,7 @@ module.exports = React.createClass({
             console.error(API_URL, status, errorThrown.toString());
         }.bind(this));
 	},
+	//Allows a user to return an item once they have finished using it
 	waitReturnMethod: function() {
 		var data;
 		var newUser;
@@ -265,7 +269,7 @@ module.exports = React.createClass({
                     <button type="button" onClick={this.waitMethod}>Update</button>
                     <button type="button" onClick={this.waitReturnMethod}>Return</button>
                 </form>
-                <Link to='/'>Cancel</Link>
+                <Link to='/'>Back</Link>
             </div>
 			
         );
