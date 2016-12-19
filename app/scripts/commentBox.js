@@ -51,6 +51,7 @@ module.exports = React.createClass({
     let isAdmin = this.props.isAdmin;
     if (isAdmin){
         return (
+            //Allows back button to go to normal view from admin view
             <div className="commentBox">
                 <Link to={'/'} type="button">Back</Link>
                 <h1>Admin Page</h1>
