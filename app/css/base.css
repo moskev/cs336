@@ -50,17 +50,6 @@ code {
     padding: 30px;
 }
 
-
-.fixed-nav-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  width: 100%;
-  height: 50px;
-  background-color: #19314A;
-}
-
 div {
     width: 100%;
     border-bottom: 2px solid #19314A;
@@ -122,12 +111,13 @@ ul {
     position: absolute;
     top: 150px;
     height: 50px;
-    width: 100%;
+    width: 1503px;
     font-weight: bold;
 }
 
 li {
     float: left;
+
 }
 
 li a {
