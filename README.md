@@ -10,5 +10,4 @@ Team names:
 Jahn Davis
 Moses Mangunrahardja
 
-Heroku link: https://eqrental.herokuapp.com/
-https://studentsenate-jrd58.herokuapp.com
+Heroku link: https://studentsenate-jrd58.herokuapp.com
